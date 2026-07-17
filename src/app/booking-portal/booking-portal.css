@@ -1,0 +1,158 @@
+:host {
+  display: block;
+  background: #f4f6fb;
+  min-height: 100dvh;
+}
+
+.portal-toolbar {
+  gap: 0.5rem;
+}
+
+.portal-toolbar .brand {
+  font-weight: 600;
+}
+
+.portal-toolbar .spacer {
+  flex: 1 1 auto;
+}
+
+.portal-toolbar .tagline {
+  font-size: 0.85rem;
+  opacity: 0.85;
+}
+
+.portal {
+  max-width: 720px;
+  margin: 1.5rem auto;
+  padding: 0 1rem 3rem;
+}
+
+.hint {
+  color: rgba(0, 0, 0, 0.6);
+  margin-top: 0;
+}
+
+.lookup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.lookup-form mat-form-field {
+  width: 100%;
+}
+
+.lookup-error {
+  color: #b3261e;
+  margin: 0.25rem 0;
+}
+
+.actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.pax-card {
+  margin-top: 1rem;
+}
+
+.pax-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.2rem 0;
+  color: rgba(0, 0, 0, 0.75);
+}
+
+.service-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.service-head mat-icon {
+  font-size: 2rem;
+  height: 2rem;
+  width: 2rem;
+  color: #3f51b5;
+}
+
+.service-head h3 {
+  margin: 0;
+}
+
+.service-head p {
+  margin: 0.15rem 0 0;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.option {
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+}
+
+.option-body {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+}
+
+.option-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.option-label {
+  font-weight: 500;
+}
+
+.option-desc {
+  font-size: 0.8rem;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.option-price {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.summary-card {
+  margin-top: 0.5rem;
+}
+
+.summary-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 0;
+}
+
+.summary-service {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.summary-choice {
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.summary-total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.9rem;
+  font-size: 1.1rem;
+}

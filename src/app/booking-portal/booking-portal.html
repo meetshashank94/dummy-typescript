@@ -1,0 +1,171 @@
+<mat-toolbar color="primary" class="portal-toolbar">
+  <mat-icon>flight_takeoff</mat-icon>
+  <span class="brand">Airline Extras</span>
+  <span class="spacer"></span>
+  <span class="tagline">Value added services</span>
+</mat-toolbar>
+
+<main class="portal">
+  <mat-stepper orientation="vertical" #stepper linear>
+    <!-- Step 1: reactive lookup form -->
+    <mat-step [stepControl]="lookupForm" [completed]="!!passenger()">
+      <ng-template matStepLabel>Find your booking</ng-template>
+
+      <form [formGroup]="lookupForm" class="lookup-form" (ngSubmit)="findBooking()">
+        <p class="hint">
+          Enter your booking reference (PNR) and the last name / email used at booking. Try
+          <strong>ABC123</strong> for a sample itinerary.
+        </p>
+
+        <mat-form-field appearance="outline">
+          <mat-label>PNR / Booking reference</mat-label>
+          <input matInput formControlName="bookingReference" autocomplete="off" />
+          <mat-icon matSuffix>confirmation_number</mat-icon>
+          @if (lookupForm.controls['bookingReference'].hasError('required')) {
+            <mat-error>Booking reference is required.</mat-error>
+          }
+          @if (lookupForm.controls['bookingReference'].hasError('minlength')) {
+            <mat-error>Must be at least 5 characters.</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Last name</mat-label>
+          <input matInput formControlName="lastName" autocomplete="off" />
+          @if (lookupForm.controls['lastName'].hasError('required')) {
+            <mat-error>Last name is required.</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput type="email" formControlName="email" autocomplete="off" />
+          @if (lookupForm.controls['email'].hasError('required')) {
+            <mat-error>Email is required.</mat-error>
+          }
+          @if (lookupForm.controls['email'].hasError('email')) {
+            <mat-error>Enter a valid email.</mat-error>
+          }
+        </mat-form-field>
+
+        @if (loading()) {
+          <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        }
+        @if (lookupError()) {
+          <p class="lookup-error">{{ lookupError() }}</p>
+        }
+
+        <div class="actions">
+          <button mat-flat-button color="primary" type="submit" [disabled]="loading()">
+            Find booking
+          </button>
+        </div>
+      </form>
+
+      @if (passenger(); as pax) {
+        <mat-card class="pax-card" appearance="outlined">
+          <mat-card-content>
+            <div class="pax-row">
+              <mat-icon>person</mat-icon>
+              <span>{{ pax.firstName }} {{ pax.lastName }} · {{ pax.pnr }}</span>
+            </div>
+            <div class="pax-row">
+              <mat-icon>flight</mat-icon>
+              <span>{{ pax.flightNumber }} · {{ pax.from }} → {{ pax.to }}</span>
+            </div>
+            <div class="pax-row">
+              <mat-icon>schedule</mat-icon>
+              <span>{{ pax.departure | date: 'medium' }}</span>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      }
+    </mat-step>
+
+    <!-- One step per value added service -->
+    @for (service of services; track service.id) {
+      <mat-step>
+        <ng-template matStepLabel>{{ service.title }}</ng-template>
+
+        <div class="service-head">
+          <mat-icon>{{ service.icon }}</mat-icon>
+          <div>
+            <h3>{{ service.title }}</h3>
+            <p>{{ service.summary }}</p>
+          </div>
+        </div>
+
+        <mat-radio-group
+          class="options"
+          [ngModel]="selectionFor(service.id)"
+          [ngModelOptions]="{ standalone: true }"
+          (ngModelChange)="choose(service.id, $event)"
+        >
+          @for (option of service.options; track trackOption($index, option)) {
+            <mat-radio-button class="option" [value]="option.id">
+              <div class="option-body">
+                <div class="option-text">
+                  <span class="option-label">{{ option.label }}</span>
+                  <span class="option-desc">{{ option.description }}</span>
+                </div>
+                <span class="option-price">
+                  {{ option.price > 0 ? '$' + option.price : 'Free' }}
+                </span>
+              </div>
+            </mat-radio-button>
+          }
+        </mat-radio-group>
+
+        <div class="actions">
+          <button mat-button matStepperPrevious>Back</button>
+          @if (service.optional) {
+            <button mat-button (click)="choose(service.id, null)" matStepperNext>Skip</button>
+          }
+          <button
+            mat-flat-button
+            color="primary"
+            matStepperNext
+            [disabled]="!selectionFor(service.id)"
+          >
+            Continue
+          </button>
+        </div>
+      </mat-step>
+    }
+
+    <!-- Final review step -->
+    <mat-step>
+      <ng-template matStepLabel>Review &amp; confirm</ng-template>
+
+      @if (passenger(); as pax) {
+        <h3>Extras for {{ pax.firstName }} {{ pax.lastName }} ({{ pax.pnr }})</h3>
+      }
+
+      <mat-card appearance="outlined" class="summary-card">
+        <mat-card-content>
+          @for (service of services; track service.id) {
+            <div class="summary-row">
+              <div class="summary-service">
+                <mat-icon>{{ service.icon }}</mat-icon>
+                <span>{{ service.title }}</span>
+              </div>
+              <span class="summary-choice">
+                {{ optionLabel(service, (selections$ | async)?.[service.id]) }}
+              </span>
+            </div>
+            <mat-divider></mat-divider>
+          }
+          <div class="summary-total">
+            <span>Total add-ons</span>
+            <strong>${{ total$ | async }}</strong>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <div class="actions">
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-stroked-button (click)="startOver()">Start over</button>
+      </div>
+    </mat-step>
+  </mat-stepper>
+</main>
