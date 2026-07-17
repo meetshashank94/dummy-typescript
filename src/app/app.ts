@@ -1,12 +1,9 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component } from '@angular/core';
+import { BookingPortal } from './booking-portal/booking-portal';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
-  templateUrl: './app.html',
-  styleUrl: './app.css'
+  imports: [BookingPortal],
+  template: '<app-booking-portal />',
 })
-export class App {
-  protected readonly title = signal('dummy-typescript');
-}
+export class App {}
