@@ -14,9 +14,9 @@ describe('App', () => {
     expect(app).toBeTruthy();
   });
 
-  it('should render the airline extras portal', async () => {
+  it('should render the airline extras portal', () => {
     const fixture = TestBed.createComponent(App);
-    await fixture.whenStable();
+    fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('.brand')?.textContent).toContain('Airline Extras');
   });

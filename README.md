@@ -38,11 +38,14 @@ This will compile your project and store the build artifacts in the `dist/` dire
 
 ## Running unit tests
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+To execute unit tests with [Karma](https://karma-runner.github.io/) and [Jasmine](https://jasmine.github.io/), use the following command:
 
 ```bash
 ng test
 ```
+
+Tests run in headless Chrome by default (see `karma.conf.js`). In sandboxed/CI
+environments set `CHROME_BIN` to a Chrome/Chromium executable if one is not on `PATH`.
 
 ## Running end-to-end tests
 
